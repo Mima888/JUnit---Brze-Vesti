@@ -21,5 +21,9 @@ public class Helper {
     public static String getRandomUrl() {
         return "http://".concat(getRandomTextCat()).concat(".rs");
     }
+    
+    public static int getRandomInteger(int range) {
+        return (int) (Math.random() * range + 1);
+    }
 
 }

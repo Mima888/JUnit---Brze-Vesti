@@ -14,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.RegionsPage;
 
 public class TestRegions {
 
@@ -65,21 +66,24 @@ public class TestRegions {
     @Test
     public void createNewRegion() {
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
+            
+              RegionsPage rp = new RegionsPage();
+              rp.createNewRegion(driver);
 
-            WebElement navBar1 = driver.findElement(By.className("navbar-nav"));
-            List<WebElement> liTagsReg = navBar1.findElements(By.tagName("li"));
-            liTagsReg.get(3).click();
-
-            WebDriverWait waitReg = new WebDriverWait(driver, 10);
-            WebElement addRegionButton = waitReg.until(ExpectedConditions.elementToBeClickable(By.className("pull-right")));
-            addRegionButton.click();
-
-            WebElement writeRegion = driver.findElement(By.id("title"));
-            writeRegion.sendKeys(Helper.getRandomTextReg());
-
-            WebElement saveRegButton = driver.findElement(By.id("save-region-button"));
-            saveRegButton.click();
+//            WebElement navBar1 = driver.findElement(By.className("navbar-nav"));
+//            List<WebElement> liTagsReg = navBar1.findElements(By.tagName("li"));
+//            liTagsReg.get(3).click();
+//
+//            WebDriverWait waitReg = new WebDriverWait(driver, 10);
+//            WebElement addRegionButton = waitReg.until(ExpectedConditions.elementToBeClickable(By.className("pull-right")));
+//            addRegionButton.click();
+//
+//            WebElement writeRegion = driver.findElement(By.id("title"));
+//            writeRegion.sendKeys(Helper.getRandomTextReg());
+//
+//            WebElement saveRegButton = driver.findElement(By.id("save-region-button"));
+//            saveRegButton.click();
 
             String expectedUrl = "http://bvtest.school.cubes.rs/admin/regions";
             String actualUrl = driver.getCurrentUrl();
