@@ -3,21 +3,27 @@ package pages;
 import framework.Helper;
 import java.util.List;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CategoriesPage {
+public class CategoriesPage extends Setup {
 
-    private void clickOnAddCategoryButton(WebDriver driver) {
+    private void clickOnAddCategoryButton() {
 
         WebDriverWait waitCat = new WebDriverWait(driver, 8);
         WebElement addCategoryButton = waitCat.until(ExpectedConditions.elementToBeClickable(By.className("pull-right")));
         addCategoryButton.click();
     }
 
-    private void saveCatButton(WebDriver driver) {
+    private void titleFieldCategory() {
+
+        WebElement writeCategory = driver.findElement(By.id("title"));
+        writeCategory.sendKeys(Helper.getRandomTextCat());
+
+    }
+
+    private void saveCatButton() {
 
         WebElement saveCatButton = driver.findElement(By.id("save-category-button"));
         saveCatButton.click();
@@ -33,13 +39,20 @@ public class CategoriesPage {
 //        driver.switchTo().defaultContent();
     }
 
+    private void clearAndWriteInTitleField() {
+
+        WebElement writeCategory = driver.findElement(By.id("title"));
+        writeCategory.clear();
+        writeCategory.sendKeys(Helper.getRandomTextCat());
+    }
+
     private void clickOnDeleteButton(WebElement row) {
 
         WebElement deleteButton = row.findElement(By.cssSelector("button[title='Delete']"));
         deleteButton.click();
     }
 
-    private void confirmDelete(WebDriver driver, WebDriverWait wait) {
+    private void confirmDelete() {
 
         driver.switchTo().activeElement();
 
@@ -48,22 +61,39 @@ public class CategoriesPage {
 
         driver.switchTo().defaultContent();
     }
-
-    private void clearAndWriteInTitleField(WebDriver driver) {
-
-        WebElement writeCategory = driver.findElement(By.id("title"));
-        writeCategory.clear();
-        writeCategory.sendKeys(Helper.getRandomTextCat());
+    
+    private void closeBtn() {
+        
+        WebElement btnClose = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"categoryDeleteDialog\"]/div/div/div[3]/button[1]")));
+        btnClose.click();
     }
 
-    private void titleFieldCategory(WebDriver driver) {
+    private void clickOnDisableBtn(WebElement row) {
 
-        WebElement writeCategory = driver.findElement(By.id("title"));
-        writeCategory.sendKeys(Helper.getRandomTextCat());
+        WebElement disableBtn = row.findElement(By.cssSelector("button[title='Disable']"));
+        disableBtn.click();
+    }
+
+    private void confirmDisable() {
+
+        WebElement btnDisable = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"categoryDisableDialog\"]/div/div/div[3]/button[2]")));
+        btnDisable.click();
 
     }
 
-    private List<WebElement> getRowsFromTable(WebDriverWait wait) {
+    private void clickOnEnableBtn(WebElement row) {
+
+        WebElement enableBtn = row.findElement(By.cssSelector("button[title='Enable']"));
+        enableBtn.click();
+    }
+
+    private void confirmEnable() {
+
+        WebElement btnEnable = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"categoryEnableDialog\"]/div/div/div[3]/button[2]")));
+        btnEnable.click();
+    }
+
+    private List<WebElement> getRowsFromTable() {
 
         WebElement tbody = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("ui-sortable")));
         List<WebElement> rows = tbody.findElements(By.tagName("tr"));
@@ -73,9 +103,9 @@ public class CategoriesPage {
 
     }
 
-    private WebElement chooseLastRow(WebDriverWait wait) {
+    private WebElement chooseLastRow() {
 
-        List<WebElement> rows = getRowsFromTable(wait);
+        List<WebElement> rows = getRowsFromTable();
 //        WebElement lastRow = rows.get(rows.size() - 1);
 //
 //        return lastRow;
@@ -83,78 +113,114 @@ public class CategoriesPage {
         return rows.get(rows.size() - 1);
     }
 
-    private WebElement chooseFirstRow(WebDriverWait wait) {
+    private WebElement chooseFirstRow() {
 
 //        List<WebElement> rows = getRowsFromTable(wait);
 //        WebElement firstRow = rows.get(0);
 //
 //        return firstRow;
-        return getRowsFromTable(wait).get(0);
+        return getRowsFromTable().get(0);
 
     }
 
-    private WebElement chooseRandomRow(WebDriverWait wait) {
+    private WebElement chooseRandomRow() {
 
-        List<WebElement> rows = getRowsFromTable(wait);
+        List<WebElement> rows = getRowsFromTable();
         WebElement randomRow = rows.get(Helper.getRandomInteger(rows.size()));
 
         return randomRow;
     }
 
-    public void addNewCategory(WebDriver driver) {
+    public void addNewCategory() {
 
-        clickOnAddCategoryButton(driver);
-        titleFieldCategory(driver);
-        saveCatButton(driver);
+        clickOnAddCategoryButton();
+        titleFieldCategory();
+        saveCatButton();
     }
 
-    public void editLastCategory(WebDriver driver, WebDriverWait wait) {
+    public void editLastCategory() {
 
-//        chooseLastCategory(wait);
-        WebElement lastRow = chooseLastRow(wait);
+        WebElement lastRow = chooseLastRow();
         clickOnEditButton(lastRow);
-        clearAndWriteInTitleField(driver);
-        saveCatButton(driver);
+        clearAndWriteInTitleField();
+        saveCatButton();
 
     }
 
-    public void editFirstCategory(WebDriver driver, WebDriverWait wait) {
+    public void editFirstCategory() {
 
-        WebElement firstRow = chooseFirstRow(wait);
+        WebElement firstRow = chooseFirstRow();
         clickOnEditButton(firstRow);
-        clearAndWriteInTitleField(driver);
-        saveCatButton(driver);
+        clearAndWriteInTitleField();
+        saveCatButton();
     }
 
-    public void editRandomCategory(WebDriver driver, WebDriverWait wait) {
+    public void editRandomCategory() {
 
-        WebElement randomRow = chooseRandomRow(wait);
+        WebElement randomRow = chooseRandomRow();
         clickOnEditButton(randomRow);
-        clearAndWriteInTitleField(driver);
-        saveCatButton(driver);
+        clearAndWriteInTitleField();
+        saveCatButton();
 
     }
 
-    public void deleteFirstCategory(WebDriver driver, WebDriverWait wait) {
+    public void deleteFirstCategory() {
 
-        WebElement firstRow = chooseFirstRow(wait);
+        WebElement firstRow = chooseFirstRow();
         clickOnDeleteButton(firstRow);
-        confirmDelete(driver, wait);
+        confirmDelete();
 
     }
 
-    public void deleteLastCategory(WebDriver driver, WebDriverWait wait) {
+    public void deleteLastCategory() {
 
-        WebElement lastRow = chooseLastRow(wait);
+        WebElement lastRow = chooseLastRow();
         clickOnDeleteButton(lastRow);
-        confirmDelete(driver, wait);
+        confirmDelete();
+//        closeBtn();
     }
 
-    public void deleteRandomCategory(WebDriver driver, WebDriverWait wait) {
+    public void deleteRandomCategory() {
 
-        WebElement randomRow = chooseRandomRow(wait);
+        WebElement randomRow = chooseRandomRow();
         clickOnDeleteButton(randomRow);
-        confirmDelete(driver, wait);
+        confirmDelete();
+    }
+    
+    public void disableFirstCategory() {
+
+        WebElement firstRow = chooseFirstRow();
+        clickOnDisableBtn(firstRow);
+        confirmDisable();
+
+    }
+
+    public void disableLastCategory() {
+
+        WebElement lastRow = chooseLastRow();
+        clickOnDisableBtn(lastRow);
+        confirmDisable();
+    }
+
+    public void disableRandomCategory() {
+
+        WebElement randomRow = chooseRandomRow();
+        clickOnDisableBtn(randomRow);
+        confirmDisable();
+    }
+
+    public void enableFirstCategory() {
+
+        WebElement firstRow = chooseFirstRow();
+        clickOnEnableBtn(firstRow);
+        confirmEnable();
+    }
+
+    public void enableLastCategory() {
+
+        WebElement lastRow = chooseLastRow();
+        clickOnEnableBtn(lastRow);
+        confirmEnable();
     }
 
 }

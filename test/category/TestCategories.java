@@ -1,51 +1,26 @@
 package category;
 
-import framework.Helper;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-//import junit.framework.Assert;
-import org.junit.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.CategoriesPage;
+import pages.DashboardPage;
+import pages.LoginPage;
+import pages.Setup;
 
-public class TestCategories {
-
-    public static WebDriver driver;
-    public static WebDriverWait wait;
-    public static DateFormat dateFormat;
+public class TestCategories extends Setup{
 
     @BeforeClass
     public static void setUpClass() {
+        
+        Setup openBrowser = new Setup();
+        openBrowser.startUp();
 
-        dateFormat = new SimpleDateFormat("HH:mm:ss");
-        System.out.println("@BeforeClass: " + dateFormat.format(new Date()));
+        LoginPage log = new LoginPage();
 
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 10);
-
-        driver.manage().window().maximize();
-        driver.get("http://bvtest.school.cubes.rs/login");
-
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
-        emailField.sendKeys("qa@cubes.rs");
-
-        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
-        passwordField.sendKeys("cubesqa");
-
-        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("btn-primary")));
-        loginButton.click();
+        log.logIn();
 
         System.out.println("Page title is: " + driver.getTitle());
     }
@@ -54,17 +29,15 @@ public class TestCategories {
     public static void tearDownClass() throws InterruptedException {
 
         Thread.sleep(3000);
-        System.out.println("@AfterClass: " + dateFormat.format(new Date()));
         driver.quit();
     }
 
     @Before
     public void setUp() {
 
-        System.out.println("@Before: " + dateFormat.format(new Date()));
+        DashboardPage navigation = new DashboardPage();
 
-        WebElement categories = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Categories")));
-        categories.click();
+        navigation.goToCategories();
 
     }
 
@@ -72,32 +45,16 @@ public class TestCategories {
     public void tearDown() throws InterruptedException {
 
         Thread.sleep(1000);
-        System.out.println("@After: " + dateFormat.format(new Date()));
     }
 
     @Test
     public void testCreateNewCategory() {
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
 
             CategoriesPage categoriesPage = new CategoriesPage();
 
-//            categoriesPage.clickOnAddCategoryButton(driver);
-//            categoriesPage.titleFieldCategory(driver);
-//            categoriesPage.saveCatButton(driver);
-            categoriesPage.addNewCategory(driver);
-
-            String expectedUrl = "http://bvtest.school.cubes.rs/admin/categories";
-            String actualUrl = driver.getCurrentUrl();
-
-            Assert.assertEquals("Url does not match.", expectedUrl, actualUrl);
-
-            String expectedTitle = "Brze vesti admin  | Categories".replaceAll("\\s+", " ").trim();
-//         System.out.println("expected title: '" + expectedTitle + "'");
-            String actualTitle = driver.getTitle();
-//         System.out.println("actual title: '" + actualTitle + "'");
-
-        Assert.assertEquals("Title does not match.", expectedTitle, actualTitle);
+            categoriesPage.addNewCategory();
         }
 
     }
@@ -105,45 +62,41 @@ public class TestCategories {
     @Test
     public void testEditCategory() {
 
-        CategoriesPage categriesPage = new CategoriesPage();
+        CategoriesPage categoriesPage = new CategoriesPage();
 
-//        categriesPage.editLastCategory(driver, wait);
-        categriesPage.editFirstCategory(driver, wait);
-
-        String expectedUrl = "http://bvtest.school.cubes.rs/admin/categories";
-        String actualUrl = driver.getCurrentUrl();
-
-        Assert.assertEquals("Url does not match.", expectedUrl, actualUrl);
-
-        String expectedTitle = "Brze vesti admin  | Categories".replaceAll("\\s+", " ").trim();
-//         System.out.println("expected title: '" + expectedTitle + "'");
-        String actualTitle = driver.getTitle();
-//         System.out.println("actual title: '" + actualTitle + "'");
-
-        Assert.assertEquals("Title does not match.", expectedTitle, actualTitle);
+//        categoriesPage.editLastCategory();
+//        categoriesPage.editFirstCategory();
+        categoriesPage.editRandomCategory();
 
     }
 
     @Test
     public void testDeleteCategory() {
-           
-          CategoriesPage categriesPage = new CategoriesPage();
-//          categriesPage.deleteFirstCategory(driver, wait);
-//          categriesPage.deleteLastCategory(driver, wait);
-          categriesPage.deleteRandomCategory(driver, wait);
 
+        CategoriesPage categriesPage = new CategoriesPage();
+          categriesPage.deleteFirstCategory();
+//          categriesPage.deleteLastCategory();
+//        categriesPage.deleteRandomCategory();
 
-        String expectedUrl = "http://bvtest.school.cubes.rs/admin/categories";
-        String actualUrl = driver.getCurrentUrl();
+    }
+    
+    @Test
+    public void disableCategory() {
 
-        Assert.assertEquals("Url does not match.", expectedUrl, actualUrl);
+        CategoriesPage rp = new CategoriesPage();
 
-        String expectedTitle = "Brze vesti admin  | Categories".replaceAll("\\s+", " ").trim();
-//         System.out.println("expected title: '" + expectedTitle + "'");
-        String actualTitle = driver.getTitle();
-//         System.out.println("actual title: '" + actualTitle + "'");
+//        rp.disableFirstCategory();
+        rp.disableLastCategory();
+//        rp.disableRandomCategory();
 
-        Assert.assertEquals("Title does not match.", expectedTitle, actualTitle);
+    }
 
+    @Test
+    public void enableCategory() {
+
+        CategoriesPage rp = new CategoriesPage();
+
+//        rp.enableFirstCategory();
+        rp.enableLastCategory();
     }
 }
