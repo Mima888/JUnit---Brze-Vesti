@@ -73,10 +73,10 @@ public class TestCategories extends Setup{
     @Test
     public void testDeleteCategory() {
 
-        CategoriesPage categriesPage = new CategoriesPage();
-          categriesPage.deleteFirstCategory();
-//          categriesPage.deleteLastCategory();
-//        categriesPage.deleteRandomCategory();
+        CategoriesPage categoriesPage = new CategoriesPage();
+          categoriesPage.deleteFirstCategory();
+//          categoriesPage.deleteLastCategory();
+//        categoriesPage.deleteRandomCategory();
 
     }
     
